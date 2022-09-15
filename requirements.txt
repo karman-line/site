@@ -1,0 +1,7 @@
+requests
+archieml
+beautifulsoup4
+pyyaml
+lxml
+jinja2
+markdown
