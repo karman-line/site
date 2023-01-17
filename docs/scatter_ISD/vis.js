@@ -19,13 +19,14 @@ const response = fetch(url)
     return response.json();
   });
 
-// call function to visualize data
+// call function and visualize data
 response.then(function (json) {
   update_json(json);
   visualize(json.data)
 });
 
-// function to aggregate enrollment
+// function to aggregate enrollment, calculate average enrollment 
+// and number of schools for each ISD
 function update_json(json) {
   Object.keys(json.data).forEach(isd_record => {
     Object.keys(json.data[isd_record]).forEach(key => {
@@ -66,8 +67,6 @@ function visualize(data) {
     .domain([40000, d3.max(data, d => +d.mhi)]);
     //.domain(d3.extent(data, d => +d.mhi));
 
-  console.log("y-axis:", x.domain());
-
   // append X-axis
   svg.append("g")
     .attr("class", "x axis")
@@ -96,7 +95,7 @@ function visualize(data) {
     .attr("transform", "rotate(-90)")
     .attr("y", -margin.left + 45)
     .attr("x", -margin.top)
-    .text("Median household income ($)");
+    .text("Median household income($)");
 
   // create a tooltip variable
   var tooltip = d3.select("#chart-1")
@@ -119,7 +118,7 @@ function visualize(data) {
       .style("opacity", 1)
       .attr("tooltip");
     // display values in the tooltip when user hovers over the circle
-    tooltip.html(d["NAME"] + "<br/> num_schools: " + d["num_schools"] + "<br/> avg_enrollment: " + d["avg_enrollment"] + "<br/> UIL totals: " + d["UIL totals"])
+    tooltip.html(d["NAME"] + "<br/> Number of schools: " + d["num_schools"] + "<br/> Average enrollment: " + d["avg_enrollment"] + "<br/> UIL totals: " + d["UIL totals"])
       .style("opacity", 0.9)
       .style("left", (event.pageX) + "px")
       .style("top", (event.pageY) + "px");
