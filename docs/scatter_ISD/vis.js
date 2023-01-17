@@ -1,8 +1,8 @@
 // Set the dimensions of the chart
-var width = 650;
-var height = 450;
+let width = 650;
+let height = 450;
 // Set the margins of the chart
-var margin = {
+let margin = {
   top: 20,
   right: 20,
   bottom: 50,
@@ -135,8 +135,8 @@ function visualize(data) {
 
   // append circles to the chart
   const radiusScale = d3.scaleSqrt()
-    .domain([0, 100])
-    .range([0, 10]);
+    .domain([0, d3.max(data, d => +d["UIL totals"])])
+    .range([4, 14]);
 
   svg.selectAll("circle")
     .data(data)
@@ -144,7 +144,7 @@ function visualize(data) {
     .append("circle")
     .attr("cx", d => x(+d["total_enrollment"]))
     .attr("cy", d => y(+d["mhi"]))
-    .attr("r", d => radiusScale(+d["UIL totals"] + 1) * 4)
+    .attr("r", d => radiusScale(+d["UIL totals"]))
     .style("fill", "cornflowerblue")
     .style("opacity", 0.7)
     .style("stroke", "white")
