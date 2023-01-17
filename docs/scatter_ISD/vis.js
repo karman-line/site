@@ -51,7 +51,7 @@ function update_json(json) {
 // function to visualize data
 function visualize(data) {
   // append SVG element to <div>
-  var svg = d3.select("#chart-1")
+  let svg = d3.select("#chart-1")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -59,11 +59,11 @@ function visualize(data) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // create axis variables
-  var x = d3.scaleLinear().range([0, (width - margin.left - margin.right)])
+  let x = d3.scaleLinear().range([0, (width - margin.left - margin.right)])
     .domain([0, d3.max(data, d => +d.total_enrollment)]);
     //.domain(d3.extent(data, d => +d.total_enrollment));
 
-  var y = d3.scaleLinear().range([(height - margin.top - margin.bottom), 0])
+  let y = d3.scaleLinear().range([(height - margin.top - margin.bottom), 0])
     .domain([40000, d3.max(data, d => +d.mhi)]);
     //.domain(d3.extent(data, d => +d.mhi));
 
@@ -98,7 +98,7 @@ function visualize(data) {
     .text("Median household income($)");
 
   // create a tooltip variable
-  var tooltip = d3.select("#chart-1")
+  let tooltip = d3.select("#chart-1")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
@@ -109,7 +109,7 @@ function visualize(data) {
     .style("padding", "5px");
 
   // function to update display when user hovers over the circle
-  var mouseover = function (d) {
+  let mouseover = function (d) {
     // highlight circle when user hovers over the circle
     d3.select(this)
       .style("fill", "wheat")
@@ -125,7 +125,7 @@ function visualize(data) {
   }
 
   // function to update the tooltip when user leaves the circle
-  var mouseleave = function (d) {
+  let mouseleave = function (d) {
     d3.select(this)
       .style("stroke", "white")
       .style("fill", "cornflowerblue")
