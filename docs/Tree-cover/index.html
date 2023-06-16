@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134857343-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-134857343-1');
+</script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+      
+    <!-- Your CSS files -->
+    <link rel="stylesheet" href="../style/default.css">
+    
+    <!-- google fonts: Roboto Condensed(super-font) and Lora(sub-font) -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700" rel="stylesheet"> 
+
+    <!-- Mapbox API -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  
+    <title>Tree cover in Long Island</title>
+  </head>
+    
+  <style>
+    
+    #map-container {
+    position: relative;
+    height: 600px;
+    width: 100%;}
+
+    #map {
+      position: relative;
+      height: inherit;
+      width: inherit;
+    }
+
+    #methodology {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 10.5;
+    }
+
+    /* #map { position: absolute; height: 600px; top: 1500px; bottom: 0; width: 100%; } */
+  </style>
+
+  <body class="biege-theme">
+    <div class="container"><!-- start of the main container-->
+        <div class="row justify-content-center"><!-- headline and intro -->
+            <div class="col-lg-10 ">
+                <!-- <p><a href="https://kaarnam.com/">&#8592; back to homepage</a></p> -->
+                
+                
+                    <h1 class="headline super-font">In Long Island’s plans to tackle climate change, boosting tree cover is a good place to start.</h1>
+                
+                    <p class="date sub-font">June 20, 2023</p>
+                    <p class="credit super-font">By Karthika Namboothiri</p>
+                
+                
+                
+                
+                    <div class="sub-font body-text">
+                        <p>You know your neighborhood could probably use more trees. Apart from the immediate benefits of a lush green canopy providing shade on a sweltering summer day, increasing urban tree cover equally across neighborhoods promises big gains.</p>
+                        <p>Climate change experts have long predicted that temperatures are rising and local governments, including those in the state, are accounting for its effects. In New York, winters have warmed three times faster than summers, according to data from the Department of Conservation, bringing in less rain and snow. Islip in Suffolk County had its warmest summer last year and experienced its longest frost-free season. The number of heat waves per year is also <a href="https://www.dec.ny.gov/energy/125801.html">expected to increase.</a></p>
+                        <p>However, not everyone will be impacted the same way. A detailed analysis of satellite data from the U.S. Geological Survey of every census tract in Long Island shows that tree cover is disproportionately spread across the region. With almost as many inhabitants as Suffolk but less than a quarter in size, only 27 percent of Nassau County has tree cover compared to Suffolk’s average of 42 percent.</p>
+                        <p>Let’s put that in context. If the area of tree cover was measured as Olympic size swimming pools, about six people in Nassau County would share one pool. Meanwhile every individual in Suffolk County could have their own.</p>
+                        <p>In this post, tree cover refers to all kinds of trees; those in state and national parks, trees in private backyards, as well as those along sidewalks and parking lots.</p>
+                        
+                        <iframe title="Tree cover by cities and towns" aria-label="Table" id="datawrapper-chart-e8JCn" src="https://datawrapper.dwcdn.net/e8JCn/4/" scrolling="no" frameborder="0" style="border: none;" width="518" height="703" data-external="1"></iframe>  
+                        </br></br>
+                        <p>Long Island’s most populous town of Hempstead has as little as 14 percent of tree cover, according to the analysis. In contrast, more than half of Shelter Island, where less than four thousand residents reside, is covered in trees.</p>
+                        <p>Lower rates of tree cover in urban places can create  “islands” of heat which causes  concentrated areas of high temperature. The “urban heat island effect”, according to non-profit American Forests which advocates for increased <a href="https://treeequityscore.org/methodology/#10.07/40.7582/-73.3356">tree equity</a>, often disproportionately affects vulnerable populations, low-income communities and people of color.</p>
+                        <!-- <p><strong>Explore the interactive map below to find out how much tree cover exists in your neighborhood.</strong></p> -->
+                        </br>
+                        <h3 class="subhead super-font">Explore the interactive map below to find out how much tree cover exists in your neighborhood.</h3>
+                        </br>
+                        </div> 
+
+                        <div id="map-container">
+                          <script>
+                            mapboxgl.accessToken = 'pk.eyJ1Ijoia2FybWFuLWxpbmUiLCJhIjoiY2tpZ2tycTdkMDgxbDJxczhpM3J6Yjd5cSJ9.j-A7KLmgzJ4ghuLEOI5JrA';
+                            const map = new mapboxgl.Map({
+                            container: 'map-container', // container ID
+                            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+                            style: 'mapbox://styles/karman-line/cliv8t8lt00nq01r74h280pvl', // style URL
+                            center: [-72.901, 40.878], // starting position [lng, lat]
+                            zoom: 8.5 // starting zoom
+                            });
+                            
+                            map.on('load', () => {
+                                  // Add a source for the state polygons.
+                                  map.addSource('tracts-source', {
+                                      'type': 'geojson',
+                                      'data': 'zonal-LI-tracts.json'
+                                  });
+                                  map.addLayer({
+                                    'id': 'tracts-layer',
+                                    'type': 'fill',
+                                    'source': 'tracts-source',
+                                    'paint': {
+                                        'fill-color': 'transparent',
+                                        'fill-outline-color': 'rgba(130, 130, 130, 1)',}
+                                  });
+                                  map.on('click', 'tracts-layer', function (e) {
+                                    // var coordinates = e.features[0].geometry.coordinates;
+                                    var description = e.features[0].properties['_mean'];
+                                    var landArea = e.features[0].properties['ALAND10'];
+                                    nfObject = new Intl.NumberFormat('en-US');
+                                    landAreaoutput = nfObject.format(landArea);
+  
+                                    new mapboxgl.Popup()
+                                        .setLngLat(e.lngLat)
+                                        .setHTML('<h3>' + e.features[0].properties.NAMELSAD10 + '</h3><p><strong>' + "Land area: " + '</strong>' + landAreaoutput + " m&sup2" +'</br><strong>' + "Tree cover: " + '</strong>' + Math.round(description) + "%")
+                                        .addTo(map);
+                                });
+  
+                                // Change the cursor style to indicate clickable features
+                                map.on('mouseover', 'tracts-layer', function () {
+                                    map.getCanvas().style.cursor = 'pointer';
+                                });
+  
+                                map.on('mouseleave', 'tracts-layer', function () {
+                                    map.getCanvas().style.cursor = '';
+                                });
+  
+                          });
+                          </script></div>
+                      </br></br>
+                      <div class="sub-font body-text"> 
+                      <!-- <img src="bball_10.gif" alt="basketball court with 10">         -->
+                      <p>In April, President Biden announced a <a href="https://www.usda.gov/media/press-releases/2023/04/12/biden-harris-administration-announces-historic-funding-expand">1 billion dollar grant</a> to increase tree cover in urban spaces through the U.S. Forest Service and local communities. Numerous census tracts in both Nassau and Suffolk Counties have been identified by the program as disadvantaged, as per the <a href="https://screeningtool.geoplatform.gov/en/#13.93/40.71008/-73.62335">Climate and Economic Justice Screening tool</a>. The program is intended to tackle issues of “extreme heat, storm-induced flooding, and other climate impacts” through increasing urban forest cover.</p>
+                      <p>It is estimated that more than a hundred thousand acres in Suffolk County can be used to plant more trees, according to The Nature Conservancy’s <a href="https://www.reforestationhub.org/">Reforestation Hub</a>. Ensuring there is equitable access to green spaces across Long Island will be a promising step in its future.</p>
+                      </br></br>
+                      <h4><strong>Methodology</strong></h4>
+                      <p id="methodology">In order to calculate tree cover for Long island per census tract, I used LANDSAT satellite data from USGS’s National Land Cover Database. Using a method called zonal statistics, I calculated the average tree cover for each tract, city and town by overlaying boundary shapes. The total area of land, population as well as tree cover for Nassau, Suffolk and Long Island were calculated from this data and the shapefiles used to create the interactive map in Mapbox. </p>
+                      <h5><strong>Sources</strong></h5>
+                      <p id="methodology">
+                        <li><a href="https://www.mrlc.gov/data?f%5B0%5D=year%3A2019">National Land Cover Database</a>, U.S. Geological Survey 2021</li>
+                        <li>N.Y. State Civil Boundaries <a href="https://gis.ny.gov/civil-boundaries">shapefiles</a></li>
+                        <li>TIGER/Line shapefiles from <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.2010.html#list-tab-790442341">U.S. Census Bureau</a></li>
+                        </p></br></br>
+                    </div>
+
+                
+                </p>
+            </div>
+        </div>
+        
+      </div><!-- end of the main container-->
+   
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>
