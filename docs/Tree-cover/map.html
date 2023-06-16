@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134857343-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-134857343-1');
+</script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+      
+    <!-- Your CSS files -->
+    <link rel="stylesheet" href="../style/default.css">
+    
+    <!-- google fonts: Roboto Condensed(super-font) and Lora(sub-font) -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700" rel="stylesheet"> 
+
+    <!-- Mapbox API -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  
+    <title>Tree cover in Long Island</title>
+  </head>
+    
+  <style>
+    
+
+    #map-container {
+    position: relative;
+    height: 600px;
+    width: 100%;}
+
+    #map {
+      position: relative;
+      height: inherit;
+      width: inherit;
+    }
+
+    /* #map { position: absolute; height: 600px; top: 1500px; bottom: 0; width: 100%; } */
+  </style>
+
+  <body class="biege-theme">
+    <div class="container"><!-- start of the main container-->
+        <div class="row justify-content-center"><!-- headline and intro -->
+            <div class="col-lg-10 ">
+                <!-- <p><a href="https://kaarnam.com/">&#8592; back to homepage</a></p> -->
+                
+                        <div id="map-container">
+
+                        <script>
+                          mapboxgl.accessToken = 'pk.eyJ1Ijoia2FybWFuLWxpbmUiLCJhIjoiY2tpZ2tycTdkMDgxbDJxczhpM3J6Yjd5cSJ9.j-A7KLmgzJ4ghuLEOI5JrA';
+                          const map = new mapboxgl.Map({
+                          container: 'map-container', // container ID
+                          // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+                          style: 'mapbox://styles/karman-line/cliv8t8lt00nq01r74h280pvl', // style URL
+                          center: [-72.901, 40.878], // starting position [lng, lat]
+                          zoom: 8.5 // starting zoom
+                          });
+                          
+                          map.on('load', () => {
+                                // Add a source for the state polygons.
+                                map.addSource('tracts-source', {
+                                    'type': 'geojson',
+                                    'data': 'zonal-LI-tracts.json'
+                                });
+                                map.addLayer({
+                                  'id': 'tracts-layer',
+                                  'type': 'fill',
+                                  'source': 'tracts-source',
+                                  'paint': {
+                                      'fill-color': 'transparent',
+                                      'fill-outline-color': 'rgba(130, 130, 130, 1)',}
+                                });
+                                map.on('click', 'tracts-layer', function (e) {
+                                  // var coordinates = e.features[0].geometry.coordinates;
+                                  var description = e.features[0].properties['_mean'];
+                                  var landArea = e.features[0].properties['ALAND10'];
+                                  nfObject = new Intl.NumberFormat('en-US');
+                                  landAreaoutput = nfObject.format(landArea);
+
+                                  new mapboxgl.Popup()
+                                      .setLngLat(e.lngLat)
+                                      .setHTML('<h3>' + e.features[0].properties.NAMELSAD10 + '</h3><p><strong>' + "Land area: " + '</strong>' + landAreaoutput + " m&sup2" +'</br><strong>' + "Tree cover: " + '</strong>' + Math.round(description) + "%")
+                                      .addTo(map);
+                              });
+
+                              // Change the cursor style to indicate clickable features
+                              map.on('mouseover', 'tracts-layer', function () {
+                                  map.getCanvas().style.cursor = 'pointer';
+                              });
+
+                              map.on('mouseleave', 'tracts-layer', function () {
+                                  map.getCanvas().style.cursor = '';
+                              });
+
+                        });
+                        </script></div>
+                        </body>
+
+                        <!-- e.features[0].properties.NAMELSAD10 -->
+                        <!-- .setHTML('<h3>' + e.features[0].properties.NAMELSAD10 + '</h3><p><strong>' + "Tree cover: " + '</strong>' + Math.round(description) + "%"+'</p>') -->
+                      
